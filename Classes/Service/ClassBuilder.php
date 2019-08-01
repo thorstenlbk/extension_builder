@@ -240,24 +240,24 @@ class ClassBuilder implements SingletonInterface
         }
 
         if ($domainProperty->getRequired()) {
-            if (!$classProperty->isTaggedWith('validate')) {
-                $validateTag = explode(' ', trim($domainProperty->getValidateAnnotation()));
-                $classProperty->setTag('validate', $validateTag[1]);
+            if (!$classProperty->isTaggedWith('TYPO3\CMS\Extbase\Annotation\Validate')) {
+                $validateTag = $domainProperty->getValidateAnnotation();
+                $classProperty->setTag($validateTag);
             }
         }
 
         if ($domainProperty->getCascadeRemove()) {
-            if (!$classProperty->isTaggedWith('cascade')) {
-                $validateTag = explode(' ', trim($domainProperty->getCascadeRemoveAnnotation()));
-                $classProperty->setTag('cascade', $validateTag[1]);
+            if (!$classProperty->isTaggedWith('TYPO3\CMS\Extbase\Annotation\ORM\Cascade')) {
+                $validateTag = $domainProperty->getCascadeRemoveAnnotation();
+                $classProperty->setTag($validateTag);
             }
         }
 
         if ($domainProperty->isRelation()) {
             /** @var $domainProperty \EBT\ExtensionBuilder\Domain\Model\DomainObject\Relation\AbstractRelation */
             if ($domainProperty->getLazyLoading()) {
-                if (!$classProperty->isTaggedWith('lazy')) {
-                    $classProperty->setTag('lazy', '');
+                if (!$classProperty->isTaggedWith('TYPO3\CMS\Extbase\Annotation\ORM\Lazy')) {
+                    $classProperty->setTag('TYPO3\CMS\Extbase\Annotation\ORM\Lazy', '');
                 }
             }
         }
@@ -752,7 +752,7 @@ class ClassBuilder implements SingletonInterface
             if (!$this->classObject->getProperty($repositoryName)->isTaggedWith('inject')
                 && !$this->classObject->methodExists('inject' . ucfirst($repositoryName))
             ) {
-                $this->classObject->getProperty($repositoryName)->setTag('inject');
+                $this->classObject->getProperty($repositoryName)->setTag('@TYPO3\CMS\Extbase\Annotation\Inject');
             }
         }
         foreach ($domainObject->getActions() as $action) {
